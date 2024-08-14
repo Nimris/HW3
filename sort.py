@@ -14,8 +14,8 @@ def sort_dir(src_dir, dst_dir):
         if item.name.startswith('$') or item.name.startswith('.'):
             continue  # Пропускаем системные и скрытые папки
         elif item.is_dir():
-            #sort_dir(item, dst_dir)
-            Thread(target=sort_dir, args=(item, dst_dir)).start()
+            sort_dir(item, dst_dir)
+            #Thread(target=sort_dir, args=(item, dst_dir)).start()
         elif item.is_file():
             copy_file(item, dst_dir)
             extention_dir = Path(dst_dir) / Path(item.suffix.replace(".", ""))
@@ -30,7 +30,6 @@ def copy_file(file, dst_dir):
             shutil.copy(file, ext_dir / file.name)
     except shutil.Error as e:
         logging.error(f"Failed to copy {file}: {e}")
-    
 
 def main():
     if len(sys.argv) < 2:
@@ -43,8 +42,8 @@ def main():
         logging.error(f"The source path '{src_dir}' does not exist.")
         sys.exit(1)
     
-    #with ThreadPoolExecutor() as executor:
-    #    executor.submit(sort_dir, src_dir, dst_dir)
+    with ThreadPoolExecutor() as executor:
+        executor.submit(sort_dir, src_dir, dst_dir)
     
     sort_dir(src_dir, dst_dir)
     logging.info(f"Files copied from {src_dir} and sorted to {dst_dir}.")
