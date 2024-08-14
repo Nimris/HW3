@@ -33,7 +33,7 @@ def copy_file(file, dst_dir):
 
 def main():
     if len(sys.argv) < 2:
-        logging.error("Please provide source and (optional) destination directories.")
+        logging.error("Please provide source and destination directories (optional).")
         sys.exit(1)
     src_dir = Path(sys.argv[1]).resolve()
     dst_dir = Path(sys.argv[2]).resolve() if len(sys.argv) >= 3 else src_dir / 'dist'
@@ -45,7 +45,7 @@ def main():
     with ThreadPoolExecutor() as executor:
         executor.submit(sort_dir, src_dir, dst_dir)
     
-    sort_dir(src_dir, dst_dir)
+    #sort_dir(src_dir, dst_dir)
     logging.info(f"Files copied from {src_dir} and sorted to {dst_dir}.")
     
     
